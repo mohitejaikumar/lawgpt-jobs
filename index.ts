@@ -146,7 +146,7 @@ async function main(){
             
         }
         catch(err){
-            console.error.bind(console, 'Monthly refresh error:');
+            console.error.bind(console, 'Refresh error:');
         }
     }
     catch(err){
