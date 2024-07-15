@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc -b",
+    "build": "tsc",
     "start": "node index.js"
   },
   "keywords": [],
@@ -14,9 +14,11 @@
     "dotenv": "^16.4.5",
     "mongoose": "^8.5.1",
     "tsc": "^2.0.4",
-    "typescipt": "^1.0.0"
+    "typescipt": "^1.0.0",
+    "typescript": "^5.5.3"
   },
   "devDependencies": {
-    "@types/node": "^20.14.10"
+    "@types/node": "^20.14.10",
+    "esbuild": "0.23.0"
   }
 }
