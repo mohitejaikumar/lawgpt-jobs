@@ -8,10 +8,14 @@ const uri = process.env.MONGODB_URI || "";
 async function main(){
 
     try{
-        await mongoose.connect(uri);
+        
+        await mongoose.connect(uri).then(()=>{
+            console.log("Connected to MongoDB");
+        });
     
         // monthly and yearly refresh filter 
         try{
+        
         const refreshUsers = await User.aggregate([
         {
             $addFields: {
@@ -67,14 +71,14 @@ async function main(){
                 year:1
             }
         }])
-
+            console.log(refreshUsers);
             let  promises:any[] = [];
             refreshUsers.map((user)=>{
                     if(user.month === user.purchaseMonth && user.year !== user.purchaseYear){
                         // yearly refresh
                         promises.push(new Promise<void>(async(resolve,reject)=>{
                             try{
-                                    await User.findByIdAndUpdate(user._id,{tokens:0});
+                                    await User.findByIdAndUpdate(user._id,{tokens:0, monthly_cases_limit:0 , paln:"free"});
                                     resolve();
                                 }
                                 catch(err){
@@ -87,7 +91,7 @@ async function main(){
                         if(user.plan === "essential"){
                             promises.push(new Promise<void>(async(resolve,reject)=>{
                                 try{
-                                    await User.findByIdAndUpdate(user._id,{tokens:100000});
+                                    await User.findByIdAndUpdate(user._id,{tokens:100000})
                                     resolve();
                                 }
                                 catch(err){
@@ -119,7 +123,10 @@ async function main(){
                         }
                     }
             })
-            await Promise.all(promises);
+            
+            await Promise.all(promises).then(()=>{
+                console.log("Updated users token");
+            });
         }
         catch(err){
             console.error.bind(console, 'Refresh error:');
