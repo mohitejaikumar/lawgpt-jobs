@@ -71,7 +71,7 @@ async function main(){
                 year:1
             }
         }])
-            console.log(refreshUsers);
+           
             let  promises:any[] = [];
             refreshUsers.map((user)=>{
                     if(user.month === user.purchaseMonth && user.year !== user.purchaseYear){
@@ -125,16 +125,20 @@ async function main(){
             })
             
             await Promise.all(promises).then(()=>{
-                console.log("Updated users token");
+                console.log(`Updated tokens of ${promises.length} users`);
             });
+
         }
         catch(err){
             console.error.bind(console, 'Refresh error:');
         }
+        await mongoose.disconnect();
     }
     catch(err){
         mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection error:'));
     }
+
+    process.exit(0);
     
 }
 
